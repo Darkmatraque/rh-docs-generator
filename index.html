@@ -50,7 +50,7 @@
         </select>
 
         <p class="hint">
-          Les modèles sont génériques et doivent être vérifiés et adaptés selon la législation et les conventions de votre pays.
+          Les modèles sont génériques et doivent être vérifiés selon la législation de votre pays.
         </p>
       </section>
 
@@ -68,7 +68,8 @@
       <section class="card small" id="legal">
         <h2>Important</h2>
         <p class="hint">
-          Ce service fournit des modèles standards à titre indicatif. Il ne remplace pas un conseil juridique ou RH qualifié.
+          Ce service fournit des modèles standards.  
+          Il ne remplace pas un conseil juridique ou RH qualifié.
         </p>
       </section>
     </aside>
@@ -80,7 +81,7 @@
           <!-- Champs générés dynamiquement -->
         </form>
         <p class="hint">
-          Les champs affichés s’adaptent automatiquement au type de document sélectionné.
+          Les champs s’adaptent automatiquement au document choisi.
         </p>
       </section>
 
@@ -90,12 +91,12 @@
           <div class="actions">
             <button id="generateBtn" class="btn primary">Générer</button>
             <button id="copyBtn" class="btn">Copier</button>
-            <button id="printBtn" class="btn">Imprimer / PDF</button>
+            <button id="pdfBtn" class="btn">Télécharger PDF</button>
           </div>
         </div>
         <div id="output" class="output" contenteditable="true"></div>
         <p class="hint bottom-hint">
-          Vous pouvez modifier le texte directement ci-dessus avant de l’imprimer ou de le copier.
+          Vous pouvez modifier le texte avant export.
         </p>
       </section>
     </section>
@@ -103,11 +104,15 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div>Générateur de documents RH — outil de mise en forme de modèles standards.</div>
-      <div class="footer-muted">Aucune responsabilité ne peut être engagée quant à l’utilisation des modèles générés. Vérifiez toujours avec votre service RH ou un conseiller juridique.</div>
+      <div>Générateur de documents RH — modèles standards.</div>
+      <div class="footer-muted">Vérifiez toujours avec votre service RH ou un conseiller juridique.</div>
     </div>
   </footer>
 
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Script principal -->
   <script src="script.js"></script>
 </body>
 </html>
