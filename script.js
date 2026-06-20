@@ -1,4 +1,4 @@
-// Définition des modèles de documents RH
+// Modèles de documents RH
 const templates = {
   attestationTravail: {
     label: "Attestation de travail",
@@ -15,21 +15,22 @@ const templates = {
       { name: "signataire", label: "Nom du signataire", full: false },
       { name: "fonctionSignataire", label: "Fonction du signataire", full: false }
     ],
-    generate: (d) => {
+    generate: (d, country) => {
       const fin = d.dateFin ? `au ${d.dateFin}` : "à ce jour";
+      const objet = country === "fr" ? "Attestation d’emploi" : "Attestation de travail";
       return (
 `${d.lieu}, le ${d.date}
 
 ${d.entreprise}
 ${d.adresseEntreprise}
 
-Objet : Attestation de travail
+Objet : ${objet}
 
 Je soussigné(e) ${d.signataire}, ${d.fonctionSignataire}, certifie que :
 
 ${d.nomSalarie} a été employé(e) au sein de l’entreprise ${d.entreprise} en qualité de ${d.poste}, sous contrat de type ${d.typeContrat}, du ${d.dateDebut} ${fin}.
 
-Cette attestation est délivrée à l’intéressé(e) pour servir et valoir ce que de droit.
+La présente attestation est délivrée à la demande de l’intéressé(e) pour servir et valoir ce que de droit.
 
 ${d.entreprise}
 
@@ -111,13 +112,13 @@ Madame, Monsieur,
 Nous faisons suite aux faits suivants : 
 ${d.faits}
 
-Ces faits constituent un manquement à vos obligations professionnelles, et ce, pour le motif suivant :
+Ces faits constituent un manquement à vos obligations professionnelles, pour le motif suivant :
 ${d.motif}
 
 Nous vous rappelons que nous attendons de votre part :
 ${d.attentes}
 
-Nous vous invitons à prendre la pleine mesure de la gravité de la situation et à adopter, dès à présent, un comportement conforme à vos obligations contractuelles. À défaut, nous pourrions être amenés à envisager des mesures disciplinaires supplémentaires.
+Nous vous invitons à prendre la pleine mesure de la situation et à adopter, dès à présent, un comportement conforme à vos obligations contractuelles. À défaut, nous pourrions être amenés à envisager des mesures disciplinaires supplémentaires.
 
 Nous restons à votre disposition pour un entretien si vous le souhaitez.
 
@@ -221,6 +222,7 @@ Signature : ______________________`
 
 // DOM
 const docTypeSelect = document.getElementById("docType");
+const countrySelect = document.getElementById("country");
 const formContainer = document.getElementById("docForm");
 const generateBtn = document.getElementById("generateBtn");
 const copyBtn = document.getElementById("copyBtn");
@@ -273,12 +275,15 @@ function getFormData(type) {
 // Génération du document
 function generateDocument() {
   const type = docTypeSelect.value;
+  const country = countrySelect.value || "generic";
+
   if (!type || !templates[type]) {
-    alert("Choisis d’abord un type de document.");
+    alert("Veuillez d’abord sélectionner un type de document.");
     return;
   }
+
   const data = getFormData(type);
-  const text = templates[type].generate(data);
+  const text = templates[type].generate(data, country);
   output.textContent = text;
 }
 
@@ -292,9 +297,9 @@ async function copyOutput() {
   try {
     await navigator.clipboard.writeText(text);
     copyBtn.textContent = "Copié ✅";
-    setTimeout(() => (copyBtn.textContent = "Copier le texte"), 1500);
+    setTimeout(() => (copyBtn.textContent = "Copier"), 1500);
   } catch (e) {
-    alert("Impossible de copier automatiquement. Sélectionne le texte manuellement.");
+    alert("Impossible de copier automatiquement. Sélectionnez le texte manuellement.");
   }
 }
 
@@ -329,5 +334,5 @@ printBtn.addEventListener("click", (e) => {
   printDocument();
 });
 
-// Optionnel : type par défaut
+// Optionnel : pré-sélection d’un type
 // renderForm("attestationTravail");
