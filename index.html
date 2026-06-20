@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Générateur de documents RH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <h1>Générateur de documents RH</h1>
+      <p>Crée des documents RH propres en quelques clics.</p>
+    </div>
+  </header>
+
+  <main class="container main">
+    <section class="card">
+      <h2>1. Choisir un type de document</h2>
+      <select id="docType">
+        <option value="">— Sélectionne un document —</option>
+        <option value="attestationTravail">Attestation de travail</option>
+        <option value="certificatEmployeur">Certificat d’employeur</option>
+        <option value="lettreAvertissement">Lettre d’avertissement</option>
+        <option value="finPeriodeEssai">Fin de période d’essai</option>
+        <option value="lettreRecommandation">Lettre de recommandation</option>
+      </select>
+      <p class="hint">⚠️ Modèles génériques, à adapter selon la législation de ton pays.</p>
+    </section>
+
+    <section class="card">
+      <h2>2. Remplir les informations</h2>
+      <form id="docForm" class="form-grid">
+        <!-- Champs générés dynamiquement -->
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>3. Document généré</h2>
+      <div class="actions">
+        <button id="generateBtn" class="btn primary">Générer le document</button>
+        <button id="copyBtn" class="btn">Copier le texte</button>
+        <button id="printBtn" class="btn">Imprimer / PDF</button>
+      </div>
+      <div id="output" class="output" contenteditable="true"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Générateur de documents RH — modèles génériques, sans valeur de conseil juridique.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
