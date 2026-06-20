@@ -1,4 +1,7 @@
-// Modèles de documents RH
+// ------------------------------
+//   TEMPLATES DOCUMENTS RH
+// ------------------------------
+
 const templates = {
   attestationTravail: {
     label: "Attestation de travail",
@@ -18,6 +21,7 @@ const templates = {
     generate: (d, country) => {
       const fin = d.dateFin ? `au ${d.dateFin}` : "à ce jour";
       const objet = country === "fr" ? "Attestation d’emploi" : "Attestation de travail";
+
       return (
 `${d.lieu}, le ${d.date}
 
@@ -59,6 +63,7 @@ Signature : ______________________`
       const appreciationText = d.appreciation
         ? `\nAppréciation : ${d.appreciation}\n`
         : "";
+
       return (
 `${d.lieu}, le ${d.date}
 
@@ -216,7 +221,10 @@ Signature : ______________________`
   }
 };
 
-// DOM
+// ------------------------------
+//   DOM ELEMENTS
+// ------------------------------
+
 const docTypeSelect = document.getElementById("docType");
 const countrySelect = document.getElementById("country");
 const formContainer = document.getElementById("docForm");
@@ -225,7 +233,10 @@ const copyBtn = document.getElementById("copyBtn");
 const pdfBtn = document.getElementById("pdfBtn");
 const output = document.getElementById("output");
 
-// Génération dynamique des champs
+// ------------------------------
+//   FORM BUILDER
+// ------------------------------
+
 function renderForm(type) {
   formContainer.innerHTML = "";
   if (!type || !templates[type]) return;
@@ -257,7 +268,10 @@ function renderForm(type) {
   });
 }
 
-// Récupération des données du formulaire
+// ------------------------------
+//   GET FORM DATA
+// ------------------------------
+
 function getFormData(type) {
   const tpl = templates[type];
   const data = {};
@@ -268,7 +282,10 @@ function getFormData(type) {
   return data;
 }
 
-// Génération du document
+// ------------------------------
+//   GENERATE DOCUMENT
+// ------------------------------
+
 function generateDocument() {
   const type = docTypeSelect.value;
   const country = countrySelect.value || "generic";
@@ -283,7 +300,10 @@ function generateDocument() {
   output.textContent = text;
 }
 
-// Copier le texte
+// ------------------------------
+//   COPY TEXT
+// ------------------------------
+
 async function copyOutput() {
   const text = output.textContent.trim();
   if (!text) {
@@ -299,7 +319,10 @@ async function copyOutput() {
   }
 }
 
-// Export PDF
+// ------------------------------
+//   PDF PRO EXPORT
+// ------------------------------
+
 async function downloadPDF() {
   const text = output.textContent.trim();
   if (!text) {
@@ -308,24 +331,51 @@ async function downloadPDF() {
   }
 
   const { jsPDF } = window.jspdf;
+
   const doc = new jsPDF({
     unit: "pt",
     format: "a4"
   });
 
-  const margin = 40;
-  const maxWidth = 515;
+  // MARGES PRO
+  const marginLeft = 60;
+  const marginTop = 70;
+  const maxWidth = 475;
 
+  // STYLE PRO
   doc.setFont("Helvetica", "normal");
   doc.setFontSize(12);
+  doc.setLineHeightFactor(1.4);
 
+  // Découper le texte proprement
   const lines = doc.splitTextToSize(text, maxWidth);
-  doc.text(lines, margin, margin);
 
-  doc.save("document-rh.pdf");
+  // Titre centré si détecté
+  if (lines[0].toLowerCase().includes("objet")) {
+    doc.setFontSize(14);
+    doc.setFont("Helvetica", "bold");
+    doc.text(lines[0], 300, marginTop, { align: "center" });
+    doc.setFont("Helvetica", "normal");
+    doc.setFontSize(12);
+
+    lines.shift();
+  }
+
+  // Corps du texte
+  doc.text(lines, marginLeft, marginTop + 40);
+
+  // Signature espacée
+  doc.setFont("Helvetica", "normal");
+  doc.text("Signature :", marginLeft, 760);
+  doc.line(marginLeft + 70, 758, marginLeft + 250, 758);
+
+  doc.save("document-rh-professionnel.pdf");
 }
 
-// Events
+// ------------------------------
+//   EVENTS
+// ------------------------------
+
 docTypeSelect.addEventListener("change", (e) => {
   renderForm(e.target.value);
   output.textContent = "";
