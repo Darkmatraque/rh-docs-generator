@@ -2,53 +2,109 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Générateur de documents RH</title>
+  <title>Générateur de documents RH | Modèles professionnels</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Générez des documents RH professionnels : attestations, certificats, lettres, modèles prêts à adapter pour votre entreprise.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="header">
-    <div class="container">
-      <h1>Générateur de documents RH</h1>
-      <p>Crée des documents RH propres en quelques clics.</p>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-logo">RH</div>
+        <div>
+          <div class="brand-title">Générateur de documents RH</div>
+          <div class="brand-subtitle">Modèles professionnels, prêts à adapter.</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#generator">Générateur</a>
+        <a href="#types">Types de documents</a>
+        <a href="#legal">Mentions</a>
+      </nav>
     </div>
   </header>
 
-  <main class="container main">
-    <section class="card">
-      <h2>1. Choisir un type de document</h2>
-      <select id="docType">
-        <option value="">— Sélectionne un document —</option>
-        <option value="attestationTravail">Attestation de travail</option>
-        <option value="certificatEmployeur">Certificat d’employeur</option>
-        <option value="lettreAvertissement">Lettre d’avertissement</option>
-        <option value="finPeriodeEssai">Fin de période d’essai</option>
-        <option value="lettreRecommandation">Lettre de recommandation</option>
-      </select>
-      <p class="hint">⚠️ Modèles génériques, à adapter selon la législation de ton pays.</p>
-    </section>
+  <main class="container main-layout">
+    <aside class="sidebar">
+      <section class="card">
+        <h2>Type de document</h2>
 
-    <section class="card">
-      <h2>2. Remplir les informations</h2>
-      <form id="docForm" class="form-grid">
-        <!-- Champs générés dynamiquement -->
-      </form>
-    </section>
+        <label for="docType" class="field-label">Sélectionner un modèle</label>
+        <select id="docType">
+          <option value="">— Choisir un document —</option>
+          <option value="attestationTravail">Attestation de travail</option>
+          <option value="certificatEmployeur">Certificat d’employeur</option>
+          <option value="lettreAvertissement">Lettre d’avertissement</option>
+          <option value="finPeriodeEssai">Fin de période d’essai</option>
+          <option value="lettreRecommandation">Lettre de recommandation</option>
+        </select>
 
-    <section class="card">
-      <h2>3. Document généré</h2>
-      <div class="actions">
-        <button id="generateBtn" class="btn primary">Générer le document</button>
-        <button id="copyBtn" class="btn">Copier le texte</button>
-        <button id="printBtn" class="btn">Imprimer / PDF</button>
-      </div>
-      <div id="output" class="output" contenteditable="true"></div>
+        <label for="country" class="field-label top-space">Pays / contexte</label>
+        <select id="country">
+          <option value="generic">Générique (FR / CH / BE / CA)</option>
+          <option value="fr">France</option>
+          <option value="ch">Suisse</option>
+          <option value="be">Belgique</option>
+          <option value="ca">Canada</option>
+        </select>
+
+        <p class="hint">
+          Les modèles sont génériques et doivent être vérifiés et adaptés selon la législation et les conventions de votre pays.
+        </p>
+      </section>
+
+      <section class="card" id="types">
+        <h2>Types inclus</h2>
+        <ul class="list">
+          <li>Attestation de travail</li>
+          <li>Certificat d’employeur</li>
+          <li>Lettre d’avertissement</li>
+          <li>Fin de période d’essai</li>
+          <li>Lettre de recommandation</li>
+        </ul>
+      </section>
+
+      <section class="card small" id="legal">
+        <h2>Important</h2>
+        <p class="hint">
+          Ce service fournit des modèles standards à titre indicatif. Il ne remplace pas un conseil juridique ou RH qualifié.
+        </p>
+      </section>
+    </aside>
+
+    <section class="content" id="generator">
+      <section class="card">
+        <h2>Informations à renseigner</h2>
+        <form id="docForm" class="form-grid">
+          <!-- Champs générés dynamiquement -->
+        </form>
+        <p class="hint">
+          Les champs affichés s’adaptent automatiquement au type de document sélectionné.
+        </p>
+      </section>
+
+      <section class="card">
+        <div class="card-header-row">
+          <h2>Document généré</h2>
+          <div class="actions">
+            <button id="generateBtn" class="btn primary">Générer</button>
+            <button id="copyBtn" class="btn">Copier</button>
+            <button id="printBtn" class="btn">Imprimer / PDF</button>
+          </div>
+        </div>
+        <div id="output" class="output" contenteditable="true"></div>
+        <p class="hint bottom-hint">
+          Vous pouvez modifier le texte directement ci-dessus avant de l’imprimer ou de le copier.
+        </p>
+      </section>
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="container">
-      <p>Générateur de documents RH — modèles génériques, sans valeur de conseil juridique.</p>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>Générateur de documents RH — outil de mise en forme de modèles standards.</div>
+      <div class="footer-muted">Aucune responsabilité ne peut être engagée quant à l’utilisation des modèles générés. Vérifiez toujours avec votre service RH ou un conseiller juridique.</div>
     </div>
   </footer>
 
