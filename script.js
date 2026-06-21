@@ -232,6 +232,33 @@ const generateBtn = document.getElementById("generateBtn");
 const copyBtn = document.getElementById("copyBtn");
 const pdfBtn = document.getElementById("pdfBtn");
 const output = document.getElementById("output");
+const themeToggle = document.getElementById("themeToggle");
+const assistantSelect = document.getElementById("assistantDocType");
+const assistantText = document.getElementById("assistantText");
+
+// ------------------------------
+//   THEME (clair / sombre)
+// ------------------------------
+
+(function initTheme() {
+  const saved = localStorage.getItem("grh-theme");
+  if (saved === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+})();
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    if (next === "light") {
+      document.documentElement.removeAttribute("data-theme");
+    } else {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+    localStorage.setItem("grh-theme", next);
+  });
+}
 
 // ------------------------------
 //   FORM BUILDER
@@ -266,10 +293,13 @@ function renderForm(type) {
     wrapper.appendChild(input);
     formContainer.appendChild(wrapper);
   });
+
+  // Recharger données sauvegardées pour ce type
+  loadFormData(type);
 }
 
 // ------------------------------
-//   GET FORM DATA
+//   GET / SAVE FORM DATA
 // ------------------------------
 
 function getFormData(type) {
@@ -280,6 +310,22 @@ function getFormData(type) {
     data[field.name] = (el?.value || "").trim();
   });
   return data;
+}
+
+function saveFormData(type) {
+  if (!type) return;
+  const data = getFormData(type);
+  localStorage.setItem(`grh-form-${type}`, JSON.stringify(data));
+}
+
+function loadFormData(type) {
+  const raw = localStorage.getItem(`grh-form-${type}`);
+  if (!raw) return;
+  const data = JSON.parse(raw);
+  Object.keys(data).forEach((key) => {
+    const el = document.getElementById(key);
+    if (el) el.value = data[key];
+  });
 }
 
 // ------------------------------
@@ -298,6 +344,10 @@ function generateDocument() {
   const data = getFormData(type);
   const text = templates[type].generate(data, country);
   output.textContent = text;
+
+  // Sauvegarde du dernier document
+  localStorage.setItem("grh-last-type", type);
+  localStorage.setItem("grh-last-output", text);
 }
 
 // ------------------------------
@@ -337,61 +387,125 @@ async function downloadPDF() {
     format: "a4"
   });
 
-  // MARGES PRO
   const marginLeft = 60;
-  const marginTop = 70;
+  const marginTop = 80;
   const maxWidth = 475;
 
-  // STYLE PRO
+  // Header "logo" texte
+  doc.setFont("Helvetica", "bold");
+  doc.setFontSize(14);
+  doc.text("Générateur RH", marginLeft, 40);
+  doc.setFontSize(10);
   doc.setFont("Helvetica", "normal");
+  doc.text("Outil de génération de documents RH", marginLeft, 55);
+
+  doc.setDrawColor(180);
+  doc.line(marginLeft, 60, marginLeft + 300, 60);
+
+  // Corps
+  doc.setFont("Times", "Roman");
   doc.setFontSize(12);
   doc.setLineHeightFactor(1.4);
 
-  // Découper le texte proprement
   const lines = doc.splitTextToSize(text, maxWidth);
+  doc.text(lines, marginLeft, marginTop);
 
-  // Titre centré si détecté
-  if (lines[0].toLowerCase().includes("objet")) {
-    doc.setFontSize(14);
-    doc.setFont("Helvetica", "bold");
-    doc.text(lines[0], 300, marginTop, { align: "center" });
-    doc.setFont("Helvetica", "normal");
-    doc.setFontSize(12);
-
-    lines.shift();
-  }
-
-  // Corps du texte
-  doc.text(lines, marginLeft, marginTop + 40);
-
-  // Signature espacée
-  doc.setFont("Helvetica", "normal");
-  doc.text("Signature :", marginLeft, 760);
-  doc.line(marginLeft + 70, 758, marginLeft + 250, 758);
+  // Footer simple
+  doc.setFontSize(8);
+  doc.setTextColor(120);
+  doc.text("Document généré automatiquement via Générateur RH", marginLeft, 810);
 
   doc.save("document-rh-professionnel.pdf");
 }
 
 // ------------------------------
-//   EVENTS
+//   ASSISTANT RH (simple)
 // ------------------------------
 
-docTypeSelect.addEventListener("change", (e) => {
-  renderForm(e.target.value);
-  output.textContent = "";
-});
+const assistantMessages = {
+  attestationTravail:
+    "Utilisez une attestation de travail pour prouver qu’une personne est ou a été employée dans votre entreprise.",
+  certificatEmployeur:
+    "Le certificat d’employeur est souvent demandé pour des démarches administratives (assurances, bail, etc.).",
+  lettreAvertissement:
+    "La lettre d’avertissement doit rester factuelle, précise et proportionnée aux faits reprochés.",
+  finPeriodeEssai:
+    "La fin de période d’essai doit respecter les délais de préavis prévus par le contrat ou la loi.",
+  lettreRecommandation:
+    "La lettre de recommandation met en avant les qualités et compétences du salarié pour ses futures démarches."
+};
 
-generateBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  generateDocument();
-});
+function updateAssistant(type) {
+  if (!assistantText) return;
+  if (!type || !assistantMessages[type]) {
+    assistantText.textContent =
+      "Choisissez un type de document pour obtenir un conseil rapide sur son utilisation.";
+    return;
+  }
+  assistantText.textContent = assistantMessages[type];
+}
 
-copyBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  copyOutput();
-});
+// ------------------------------
+//   FAQ ACCORDION
+// ------------------------------
 
-pdfBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  downloadPDF();
-});
+function initFAQ() {
+  const items = document.querySelectorAll(".faq-item");
+  items.forEach((item) => {
+    const q = item.querySelector(".faq-question");
+    if (!q) return;
+    q.addEventListener("click", () => {
+      item.classList.toggle("open");
+    });
+  });
+}
+
+// ------------------------------
+//   INIT
+// ------------------------------
+
+if (docTypeSelect) {
+  // Recharger dernier type + output
+  const lastType = localStorage.getItem("grh-last-type");
+  const lastOutput = localStorage.getItem("grh-last-output");
+
+  if (lastType && templates[lastType]) {
+    docTypeSelect.value = lastType;
+    renderForm(lastType);
+    if (lastOutput && output) {
+      output.textContent = lastOutput;
+    }
+  }
+
+  docTypeSelect.addEventListener("change", (e) => {
+    const type = e.target.value;
+    renderForm(type);
+    output.textContent = "";
+    updateAssistant(type);
+  });
+
+  generateBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    generateDocument();
+    saveFormData(docTypeSelect.value);
+  });
+
+  copyBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    copyOutput();
+  });
+
+  pdfBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    downloadPDF();
+  });
+
+  if (assistantSelect && assistantText) {
+    assistantSelect.addEventListener("change", (e) => {
+      updateAssistant(e.target.value);
+    });
+  }
+}
+
+// FAQ init
+document.addEventListener("DOMContentLoaded", initFAQ);
