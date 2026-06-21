@@ -21,9 +21,11 @@
       <nav class="nav">
         <a href="home.html">Accueil</a>
         <a href="index.html" class="nav-active">Générateur</a>
+        <a href="tarifs.html">Tarifs</a>
         <a href="faq.html">FAQ</a>
+        <a href="blog.html">Blog</a>
         <a href="contact.html">Contact</a>
-        <a href="about.html">À propos</a>
+        <button id="themeToggle" class="theme-toggle">🌓 Thème</button>
       </nav>
     </div>
   </header>
@@ -57,15 +59,20 @@
         </p>
       </section>
 
-      <section class="card" id="types">
-        <h2>Types inclus</h2>
-        <ul class="list">
-          <li>Attestation de travail</li>
-          <li>Certificat d’employeur</li>
-          <li>Lettre d’avertissement</li>
-          <li>Fin de période d’essai</li>
-          <li>Lettre de recommandation</li>
-        </ul>
+      <section class="card">
+        <h2>Assistant RH</h2>
+        <label for="assistantDocType" class="field-label">Besoin d’un conseil ?</label>
+        <select id="assistantDocType">
+          <option value="">— Choisir un document —</option>
+          <option value="attestationTravail">Attestation de travail</option>
+          <option value="certificatEmployeur">Certificat d’employeur</option>
+          <option value="lettreAvertissement">Lettre d’avertissement</option>
+          <option value="finPeriodeEssai">Fin de période d’essai</option>
+          <option value="lettreRecommandation">Lettre de recommandation</option>
+        </select>
+        <p id="assistantText" class="hint">
+          Choisissez un type de document pour obtenir un conseil rapide sur son utilisation.
+        </p>
       </section>
 
       <section class="card small" id="legal">
@@ -83,7 +90,8 @@
           <!-- Champs générés dynamiquement -->
         </form>
         <p class="hint">
-          Les champs s’adaptent automatiquement au document choisi.
+          Les champs s’adaptent automatiquement au document choisi.  
+          Vos données restent uniquement dans votre navigateur.
         </p>
       </section>
 
@@ -117,6 +125,7 @@
           <ul class="footer-list">
             <li><a href="home.html">Accueil</a></li>
             <li><a href="index.html">Générateur</a></li>
+            <li><a href="tarifs.html">Tarifs</a></li>
             <li><a href="faq.html">FAQ</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
@@ -137,9 +146,7 @@
     </div>
   </footer>
 
-  <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Script principal -->
   <script src="script.js"></script>
 </body>
 </html>
