@@ -2,8 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>À propos | Générateur de documents RH</title>
+  <title>À propos | Générateur RH</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="À propos du créateur du Générateur RH et de la philosophie du projet.">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -11,19 +12,20 @@
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
-        <div class="brand-logo">RH</div>
+        <div class="brand-logo">GRH</div>
         <div>
           <div class="brand-title">Générateur de documents RH</div>
-          <div class="brand-subtitle">Modèles professionnels, prêts à adapter.</div>
         </div>
       </div>
 
-    <nav class="nav">
+      <nav class="nav">
         <a href="home.html">Accueil</a>
-        <a href="index.html" class="nav-active">Générateur</a>
+        <a href="index.html">Générateur</a>
+        <a href="tarifs.html">Tarifs</a>
         <a href="faq.html">FAQ</a>
+        <a href="blog.html">Blog</a>
         <a href="contact.html">Contact</a>
-        <a href="about.html">À propos</a>
+        <button id="themeToggle" class="theme-toggle">🌓 Thème</button>
       </nav>
     </div>
   </header>
@@ -44,7 +46,7 @@
       </p>
     </section>
 
-    <section class="card" style="max-width: 800px; margin: 20px auto;">
+    <section class="card" id="confidentialite" style="max-width: 800px; margin: 20px auto;">
       <h2>Confidentialité & Données</h2>
       <p>
         Ce site ne collecte <strong>aucune donnée personnelle</strong>.
@@ -53,7 +55,7 @@
       <ul class="list">
         <li>Les informations que vous saisissez restent uniquement dans votre navigateur.</li>
         <li>Aucune donnée n’est envoyée à un serveur.</li>
-        <li>Aucune information n’est stockée, sauvegardée ou partagée.</li>
+        <li>Aucune information n’est stockée, sauvegardée ou partagée côté serveur.</li>
         <li>Les documents générés sont créés localement sur votre appareil.</li>
       </ul>
 
@@ -79,20 +81,16 @@
         Ce site ne remplace pas un service juridique ou un service RH qualifié.
       </p>
     </section>
-
-    <section class="card" style="max-width: 800px; margin: 20px auto;">
-      <h2>Contact</h2>
-      <p>
-        Pour toute suggestion ou amélioration, vous pouvez me contacter via GitHub.
-      </p>
-    </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div>Générateur de documents RH — outil gratuit et indépendant.</div>
-      <div class="footer-muted">Aucune donnée personnelle n’est collectée.</div>
+      <div class="footer-bottom">
+        © 2026 Générateur RH — Aucun stockage de données personnelles.
+      </div>
     </div>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
