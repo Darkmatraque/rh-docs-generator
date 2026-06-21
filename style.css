@@ -4,15 +4,29 @@
 
 :root {
   --bg: #f5f7fa;
+  --bg-alt: #eef2ff;
   --card-bg: #ffffff;
   --text: #111827;
   --text-light: #6b7280;
   --border: #e5e7eb;
   --primary: #2563eb;
   --primary-hover: #1e4fd1;
+  --danger: #dc2626;
   --radius: 8px;
   --shadow-soft: 0 4px 14px rgba(15, 23, 42, 0.06);
   --font: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+}
+
+:root[data-theme="dark"] {
+  --bg: #020617;
+  --bg-alt: #020617;
+  --card-bg: #020617;
+  --text: #e5e7eb;
+  --text-light: #9ca3af;
+  --border: #1f2937;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --shadow-soft: 0 4px 18px rgba(0, 0, 0, 0.7);
 }
 
 *,
@@ -28,8 +42,7 @@ body {
 }
 
 body {
-  background: --bg;
-  background: #f5f7fa;
+  background: var(--bg);
   font-family: var(--font);
   color: var(--text);
   line-height: 1.5;
@@ -40,8 +53,11 @@ body {
 ------------------------------ */
 
 .site-header {
-  background: #ffffff;
+  background: var(--card-bg);
   border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
 .header-inner {
@@ -85,6 +101,7 @@ body {
   display: flex;
   gap: 16px;
   font-size: 0.9rem;
+  align-items: center;
 }
 
 .nav a {
@@ -100,6 +117,19 @@ body {
 .nav-active {
   color: var(--primary);
   font-weight: 600;
+}
+
+.theme-toggle {
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  background: transparent;
+  color: var(--text-light);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* ------------------------------
@@ -203,7 +233,14 @@ select {
   font-family: inherit;
   background: #fff;
   color: var(--text);
-  transition: border 0.15s, box-shadow 0.15s;
+  transition: border 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] textarea,
+:root[data-theme="dark"] select {
+  background: #020617;
+  color: var(--text);
 }
 
 input:focus,
@@ -211,7 +248,7 @@ textarea:focus,
 select:focus {
   border-color: var(--primary);
   outline: none;
-  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.08);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
 }
 
 textarea {
@@ -257,11 +294,11 @@ textarea {
   padding: 8px 14px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  background: #ffffff;
+  background: transparent;
   cursor: pointer;
   font-size: 0.9rem;
   color: var(--text);
-  transition: background 0.15s, border 0.15s, transform 0.05s;
+  transition: background 0.15s, border 0.15s, transform 0.05s, color 0.15s;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -269,7 +306,7 @@ textarea {
 }
 
 .btn:hover {
-  background: #f3f4f6;
+  background: rgba(148, 163, 184, 0.12);
 }
 
 .btn:active {
@@ -294,7 +331,7 @@ textarea {
 .output {
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  background: #ffffff;
+  background: var(--card-bg);
   padding: 16px 14px;
   min-height: 260px;
   white-space: pre-wrap;
@@ -313,11 +350,11 @@ textarea {
 }
 
 /* ------------------------------
-   HERO & FEATURES (pour home.html)
+   HERO & FEATURES (home)
 ------------------------------ */
 
 .hero {
-  background: linear-gradient(135deg, #eef2ff, #f9fafb);
+  background: linear-gradient(135deg, var(--bg-alt), var(--bg));
   border-bottom: 1px solid var(--border);
 }
 
@@ -350,7 +387,7 @@ textarea {
 }
 
 .feature-card {
-  background: #ffffff;
+  background: var(--card-bg);
   border-radius: var(--radius);
   border: 1px solid var(--border);
   padding: 16px;
@@ -368,7 +405,7 @@ textarea {
 
 .site-footer {
   border-top: 1px solid var(--border);
-  background: #ffffff;
+  background: var(--card-bg);
 }
 
 .footer-inner {
@@ -424,6 +461,80 @@ textarea {
 }
 
 /* ------------------------------
+   FAQ ACCORDION
+------------------------------ */
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 0;
+}
+
+.faq-question {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.faq-item.open .faq-answer {
+  max-height: 200px;
+  margin-top: 6px;
+}
+
+/* ------------------------------
+   PRICING
+------------------------------ */
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.pricing-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 18px;
+  box-shadow: var(--shadow-soft);
+}
+
+.pricing-price {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 8px 0;
+}
+
+/* ------------------------------
+   BLOG
+------------------------------ */
+
+.blog-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.blog-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.blog-list a {
+  text-decoration: none;
+  color: var(--primary);
+}
+
+/* ------------------------------
    RESPONSIVE
 ------------------------------ */
 
@@ -433,6 +544,10 @@ textarea {
   }
 
   .features {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -460,7 +575,7 @@ textarea {
 }
 
 /* ------------------------------
-   PRINT (si tu utilises window.print ailleurs)
+   PRINT
 ------------------------------ */
 
 @media print {
