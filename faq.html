@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>FAQ | Générateur RH</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Questions fréquentes sur le Générateur RH.">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -17,12 +18,14 @@
         </div>
       </div>
 
-    <nav class="nav">
+      <nav class="nav">
         <a href="home.html">Accueil</a>
-        <a href="index.html" class="nav-active">Générateur</a>
-        <a href="faq.html">FAQ</a>
+        <a href="index.html">Générateur</a>
+        <a href="tarifs.html">Tarifs</a>
+        <a href="faq.html" class="nav-active">FAQ</a>
+        <a href="blog.html">Blog</a>
         <a href="contact.html">Contact</a>
-        <a href="about.html">À propos</a>
+        <button id="themeToggle" class="theme-toggle">🌓 Thème</button>
       </nav>
     </div>
   </header>
@@ -31,17 +34,45 @@
     <section class="card" style="max-width: 800px; margin: auto;">
       <h2>FAQ</h2>
 
-      <h3>Le site stocke-t-il mes données ?</h3>
-      <p>Non. Toutes les informations restent sur votre appareil.</p>
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Le site stocke-t-il mes données ?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          Non. Toutes les informations restent sur votre appareil. Aucune donnée n’est envoyée à un serveur.
+        </div>
+      </div>
 
-      <h3>Les documents sont-ils valables légalement ?</h3>
-      <p>Ce sont des modèles standards. Ils doivent être adaptés selon votre pays.</p>
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Les documents sont-ils valables légalement ?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          Ce sont des modèles standards. Ils doivent être adaptés selon votre pays, vos conventions collectives et vos règles internes.
+        </div>
+      </div>
 
-      <h3>Puis-je utiliser ce site pour mon entreprise ?</h3>
-      <p>Oui, totalement.</p>
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Puis-je utiliser ce site pour mon entreprise ?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          Oui, totalement. Vous pouvez l’utiliser pour générer des documents RH de base pour votre organisation.
+        </div>
+      </div>
 
-      <h3>Le service est-il gratuit ?</h3>
-      <p>Oui, entièrement.</p>
+      <div class="faq-item">
+        <div class="faq-question">
+          <span>Le service est-il gratuit ?</span>
+          <span>+</span>
+        </div>
+        <div class="faq-answer">
+          Oui, entièrement gratuit. Aucune inscription, aucun abonnement.
+        </div>
+      </div>
     </section>
   </main>
 
@@ -52,5 +83,7 @@
       </div>
     </div>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
