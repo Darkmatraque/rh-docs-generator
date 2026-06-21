@@ -1,6 +1,6 @@
 /* ------------------------------
-   STYLE PROFESSIONNEL CORPORATE
-   ------------------------------ */
+   VARIABLES & BASE
+------------------------------ */
 
 :root {
   --bg: #f5f7fa;
@@ -28,13 +28,16 @@ body {
 }
 
 body {
-  background: var(--bg);
+  background: --bg;
+  background: #f5f7fa;
   font-family: var(--font);
   color: var(--text);
   line-height: 1.5;
 }
 
-/* HEADER */
+/* ------------------------------
+   HEADER & NAV
+------------------------------ */
 
 .site-header {
   background: #ffffff;
@@ -45,7 +48,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 14px 20px;
 }
 
 .brand {
@@ -55,16 +58,17 @@ body {
 }
 
 .brand-logo {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 8px;
   background: var(--primary);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
 }
 
 .brand-title {
@@ -93,7 +97,14 @@ body {
   color: var(--primary);
 }
 
-/* LAYOUT */
+.nav-active {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* ------------------------------
+   LAYOUT
+------------------------------ */
 
 .container {
   width: 100%;
@@ -108,7 +119,9 @@ body {
   padding: 24px 20px 40px;
 }
 
-/* SIDEBAR & CONTENT */
+/* ------------------------------
+   SIDEBAR & CONTENT
+------------------------------ */
 
 .sidebar {
   display: flex;
@@ -122,7 +135,9 @@ body {
   gap: 16px;
 }
 
-/* CARDS */
+/* ------------------------------
+   CARDS
+------------------------------ */
 
 .card {
   background: var(--card-bg);
@@ -142,7 +157,9 @@ body {
   margin-bottom: 12px;
 }
 
-/* FORM */
+/* ------------------------------
+   FORM
+------------------------------ */
 
 .form-grid {
   display: grid;
@@ -202,7 +219,9 @@ textarea {
   resize: vertical;
 }
 
-/* LIST */
+/* ------------------------------
+   LISTS
+------------------------------ */
 
 .list {
   list-style: none;
@@ -216,7 +235,9 @@ textarea {
   padding: 3px 0;
 }
 
-/* ACTIONS & BUTTONS */
+/* ------------------------------
+   BUTTONS & ACTIONS
+------------------------------ */
 
 .card-header-row {
   display: flex;
@@ -241,6 +262,10 @@ textarea {
   font-size: 0.9rem;
   color: var(--text);
   transition: background 0.15s, border 0.15s, transform 0.05s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn:hover {
@@ -262,7 +287,9 @@ textarea {
   background: var(--primary-hover);
 }
 
-/* OUTPUT */
+/* ------------------------------
+   OUTPUT
+------------------------------ */
 
 .output {
   border-radius: var(--radius);
@@ -285,7 +312,59 @@ textarea {
   margin-top: 8px;
 }
 
-/* FOOTER */
+/* ------------------------------
+   HERO & FEATURES (pour home.html)
+------------------------------ */
+
+.hero {
+  background: linear-gradient(135deg, #eef2ff, #f9fafb);
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-inner {
+  padding: 60px 20px 40px;
+  text-align: left;
+}
+
+.hero-inner h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.hero-sub {
+  font-size: 1rem;
+  color: var(--text-light);
+  max-width: 480px;
+  margin-bottom: 20px;
+}
+
+.hero-btn {
+  margin-top: 10px;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding: 24px 20px 40px;
+}
+
+.feature-card {
+  background: #ffffff;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.feature-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+/* ------------------------------
+   FOOTER
+------------------------------ */
 
 .site-footer {
   border-top: 1px solid var(--border);
@@ -293,7 +372,7 @@ textarea {
 }
 
 .footer-inner {
-  padding: 14px 20px 18px;
+  padding: 18px 20px 20px;
   font-size: 0.85rem;
   color: var(--text);
 }
@@ -303,10 +382,57 @@ textarea {
   margin-top: 4px;
 }
 
-/* RESPONSIVE */
+.footer-columns {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.footer-columns h4 {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-list li {
+  margin: 4px 0;
+}
+
+.footer-list a {
+  color: var(--text-light);
+  text-decoration: none;
+}
+
+.footer-list a:hover {
+  color: var(--primary);
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--text-light);
+  text-align: center;
+}
+
+/* ------------------------------
+   RESPONSIVE
+------------------------------ */
 
 @media (max-width: 900px) {
   .main-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .features {
     grid-template-columns: 1fr;
   }
 }
@@ -327,9 +453,15 @@ textarea {
   .form-grid {
     grid-template-columns: 1fr;
   }
+
+  .hero-inner {
+    padding: 40px 20px 30px;
+  }
 }
 
-/* IMPRESSION */
+/* ------------------------------
+   PRINT (si tu utilises window.print ailleurs)
+------------------------------ */
 
 @media print {
   body {
