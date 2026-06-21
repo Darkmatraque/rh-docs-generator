@@ -11,18 +11,20 @@
   <header class="site-header">
     <div class="container header-inner">
       <div class="brand">
-        <div class="brand-logo">RH</div>
+        <div class="brand-logo">GRH</div>
         <div>
           <div class="brand-title">Générateur de documents RH</div>
-          <div class="brand-subtitle">Modèles professionnels, prêts à adapter.</div>
+          <div class="brand-subtitle">Votre assistant RH en ligne.</div>
         </div>
       </div>
-<nav class="nav">
-  <a href="index.html#generator">Générateur</a>
-  <a href="index.html#types">Types de documents</a>
-  <a href="about.html">À propos</a>
-</nav>
 
+      <nav class="nav">
+        <a href="home.html">Accueil</a>
+        <a href="index.html" class="nav-active">Générateur</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">À propos</a>
+      </nav>
     </div>
   </header>
 
@@ -51,7 +53,7 @@
         </select>
 
         <p class="hint">
-          Les modèles sont génériques et doivent être vérifiés selon la législation de votre pays.
+          Les modèles sont génériques et doivent être adaptés selon la législation de votre pays.
         </p>
       </section>
 
@@ -69,8 +71,7 @@
       <section class="card small" id="legal">
         <h2>Important</h2>
         <p class="hint">
-          Ce service fournit des modèles standards.  
-          Il ne remplace pas un conseil juridique ou RH qualifié.
+          Ce service ne remplace pas un conseil juridique ou RH qualifié.
         </p>
       </section>
     </aside>
@@ -97,7 +98,7 @@
         </div>
         <div id="output" class="output" contenteditable="true"></div>
         <p class="hint bottom-hint">
-          Vous pouvez modifier le texte avant export.
+          Vous pouvez modifier le texte avant de le copier ou de l’exporter en PDF.
         </p>
       </section>
     </section>
@@ -105,14 +106,39 @@
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div>Générateur de documents RH — modèles standards.</div>
-      <div class="footer-muted">Vérifiez toujours avec votre service RH ou un conseiller juridique.</div>
+      <div class="footer-columns">
+        <div>
+          <h4>Générateur RH</h4>
+          <p class="footer-muted">Outil gratuit pour créer vos documents RH.</p>
+        </div>
+
+        <div>
+          <h4>Navigation</h4>
+          <ul class="footer-list">
+            <li><a href="home.html">Accueil</a></li>
+            <li><a href="index.html">Générateur</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Légal</h4>
+          <ul class="footer-list">
+            <li><a href="cgu.html">Conditions d’utilisation</a></li>
+            <li><a href="about.html#confidentialite">Confidentialité</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        © 2026 Générateur RH — Aucun stockage de données personnelles.
+      </div>
     </div>
   </footer>
 
   <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
   <!-- Script principal -->
   <script src="script.js"></script>
 </body>
