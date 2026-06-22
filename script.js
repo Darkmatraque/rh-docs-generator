@@ -235,65 +235,29 @@ const output = document.getElementById("output");
 const themeToggle = document.getElementById("themeToggle");
 const assistantSelect = document.getElementById("assistantDocType");
 const assistantText = document.getElementById("assistantText");
-const historyList = document.getElementById("historyList");
-const notificationContainer = document.getElementById("notificationContainer");
 
 // ------------------------------
-//   THEME (auto + toggle)
+//   THEME (clair / sombre)
 // ------------------------------
 
 (function initTheme() {
   const saved = localStorage.getItem("grh-theme");
-  if (saved === "light" || saved === "dark") {
-    document.documentElement.setAttribute("data-theme", saved);
-    return;
+  if (saved === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
   }
-
-  const prefersDark = window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  document.documentElement.setAttribute("data-theme", prefersDark ? "dark" : "light");
 })();
 
 if (themeToggle) {
   themeToggle.addEventListener("click", () => {
     const current = document.documentElement.getAttribute("data-theme");
     const next = current === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
+    if (next === "light") {
+      document.documentElement.removeAttribute("data-theme");
+    } else {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
     localStorage.setItem("grh-theme", next);
   });
-}
-
-// ------------------------------
-//   NOTIFICATIONS
-// ------------------------------
-
-function notify(message, type = "success") {
-  if (!notificationContainer) return;
-
-  const div = document.createElement("div");
-  div.className =
-    "notification " +
-    (type === "success"
-      ? "notification-success"
-      : type === "error"
-      ? "notification-error"
-      : "");
-  const textSpan = document.createElement("span");
-  textSpan.textContent = message;
-
-  const close = document.createElement("span");
-  close.textContent = "×";
-  close.className = "notification-close";
-  close.addEventListener("click", () => div.remove());
-
-  div.appendChild(textSpan);
-  div.appendChild(close);
-  notificationContainer.appendChild(div);
-
-  setTimeout(() => {
-    div.remove();
-  }, 3500);
 }
 
 // ------------------------------
@@ -330,6 +294,7 @@ function renderForm(type) {
     formContainer.appendChild(wrapper);
   });
 
+  // Recharger données sauvegardées pour ce type
   loadFormData(type);
 }
 
@@ -364,72 +329,15 @@ function loadFormData(type) {
 }
 
 // ------------------------------
-//   HISTORY
-// ------------------------------
-
-function loadHistory() {
-  if (!historyList) return;
-  historyList.innerHTML = "";
-  const raw = localStorage.getItem("grh-history");
-  if (!raw) return;
-  const items = JSON.parse(raw);
-  items.slice(0, 20).forEach((item, index) => {
-    const li = document.createElement("li");
-    li.className = "history-item";
-    const label = document.createElement("span");
-    label.textContent = `${item.typeLabel} — ${item.date}`;
-    const small = document.createElement("span");
-    small.textContent = "Charger";
-    small.style.fontSize = "0.75rem";
-    small.style.opacity = "0.8";
-
-    li.appendChild(label);
-    li.appendChild(small);
-
-    li.addEventListener("click", () => {
-      if (output) output.textContent = item.text;
-      notify("Document chargé depuis l’historique.");
-    });
-
-    historyList.appendChild(li);
-  });
-}
-
-function addToHistory(type, text) {
-  const tpl = templates[type];
-  const label = tpl ? tpl.label : type;
-  const raw = localStorage.getItem("grh-history");
-  const items = raw ? JSON.parse(raw) : [];
-  const now = new Date();
-  const dateStr = now.toLocaleString("fr-CH", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit"
-  });
-
-  items.unshift({
-    type,
-    typeLabel: label,
-    text,
-    date: dateStr
-  });
-
-  localStorage.setItem("grh-history", JSON.stringify(items.slice(0, 50)));
-  loadHistory();
-}
-
-// ------------------------------
 //   GENERATE DOCUMENT
 // ------------------------------
 
 function generateDocument() {
   const type = docTypeSelect.value;
-  const country = countrySelect ? countrySelect.value || "generic" : "generic";
+  const country = countrySelect.value || "generic";
 
   if (!type || !templates[type]) {
-    notify("Veuillez sélectionner un type de document.", "error");
+    alert("Veuillez sélectionner un type de document.");
     return;
   }
 
@@ -437,11 +345,9 @@ function generateDocument() {
   const text = templates[type].generate(data, country);
   output.textContent = text;
 
+  // Sauvegarde du dernier document
   localStorage.setItem("grh-last-type", type);
   localStorage.setItem("grh-last-output", text);
-
-  addToHistory(type, text);
-  notify("Document généré.");
 }
 
 // ------------------------------
@@ -451,14 +357,15 @@ function generateDocument() {
 async function copyOutput() {
   const text = output.textContent.trim();
   if (!text) {
-    notify("Aucun texte à copier.", "error");
+    alert("Aucun texte à copier.");
     return;
   }
   try {
     await navigator.clipboard.writeText(text);
-    notify("Texte copié dans le presse-papiers.");
+    copyBtn.textContent = "Copié ✓";
+    setTimeout(() => (copyBtn.textContent = "Copier"), 1500);
   } catch (e) {
-    notify("Impossible de copier automatiquement.", "error");
+    alert("Impossible de copier automatiquement.");
   }
 }
 
@@ -469,7 +376,7 @@ async function copyOutput() {
 async function downloadPDF() {
   const text = output.textContent.trim();
   if (!text) {
-    notify("Aucun document à exporter.", "error");
+    alert("Aucun document à exporter.");
     return;
   }
 
@@ -481,19 +388,19 @@ async function downloadPDF() {
   });
 
   const marginLeft = 60;
-  const marginTop = 110;
+  const marginTop = 80;
   const maxWidth = 475;
 
-  // Header
+  // Header "logo" texte
   doc.setFont("Helvetica", "bold");
   doc.setFontSize(14);
-  doc.text("Générateur RH", marginLeft, 50);
+  doc.text("Générateur RH", marginLeft, 40);
   doc.setFontSize(10);
   doc.setFont("Helvetica", "normal");
-  doc.text("Outil de génération de documents RH", marginLeft, 65);
+  doc.text("Outil de génération de documents RH", marginLeft, 55);
 
   doc.setDrawColor(180);
-  doc.line(marginLeft, 80, marginLeft + 475, 80);
+  doc.line(marginLeft, 60, marginLeft + 300, 60);
 
   // Corps
   doc.setFont("Times", "Roman");
@@ -501,42 +408,14 @@ async function downloadPDF() {
   doc.setLineHeightFactor(1.4);
 
   const lines = doc.splitTextToSize(text, maxWidth);
-  let cursorY = marginTop;
-  const lineHeight = 16;
-  const pageHeight = doc.internal.pageSize.getHeight();
+  doc.text(lines, marginLeft, marginTop);
 
-  lines.forEach((line) => {
-    if (cursorY > pageHeight - 80) {
-      // Footer page
-      doc.setFontSize(8);
-      doc.setTextColor(120);
-      doc.text(
-        "Document généré automatiquement via Générateur RH",
-        marginLeft,
-        pageHeight - 40
-      );
-      doc.addPage();
-      doc.setFont("Times", "Roman");
-      doc.setFontSize(12);
-      doc.setTextColor(0);
-      cursorY = marginTop;
-    }
-    doc.text(line, marginLeft, cursorY);
-    cursorY += lineHeight;
-  });
-
-  // Footer dernière page
-  const lastPageHeight = doc.internal.pageSize.getHeight();
+  // Footer simple
   doc.setFontSize(8);
   doc.setTextColor(120);
-  doc.text(
-    "Document généré automatiquement via Générateur RH",
-    marginLeft,
-    lastPageHeight - 40
-  );
+  doc.text("Document généré automatiquement via Générateur RH", marginLeft, 810);
 
   doc.save("document-rh-professionnel.pdf");
-  notify("PDF téléchargé.");
 }
 
 // ------------------------------
@@ -585,12 +464,8 @@ function initFAQ() {
 //   INIT
 // ------------------------------
 
-document.addEventListener("DOMContentLoaded", () => {
-  initFAQ();
-  loadHistory();
-
-  if (!docTypeSelect) return;
-
+if (docTypeSelect) {
+  // Recharger dernier type + output
   const lastType = localStorage.getItem("grh-last-type");
   const lastOutput = localStorage.getItem("grh-last-output");
 
@@ -600,13 +475,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (lastOutput && output) {
       output.textContent = lastOutput;
     }
-    updateAssistant(lastType);
   }
 
   docTypeSelect.addEventListener("change", (e) => {
     const type = e.target.value;
     renderForm(type);
-    if (output) output.textContent = "";
+    output.textContent = "";
     updateAssistant(type);
   });
 
@@ -631,4 +505,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateAssistant(e.target.value);
     });
   }
-});
+}
+
+// FAQ init
+document.addEventListener("DOMContentLoaded", initFAQ);
